@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ESXi 抓包命令生成器</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="mdi mdi-vmware"></i>
+            </div>
+            <h1><i class="mdi mdi-lan"></i> ESXi 抓包命令生成器</h1>
+            <p class="subtitle">轻松生成ESXi网络抓包命令</p>
+        </header>
+
+        <form id="captureForm">
+            <!-- 基本组件选择 -->
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fas fa-cog"></i>
+                    <h2>基本设置</h2>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label><i class="mdi mdi-server-network"></i> 组件类型</label>
+                        <div class="select-wrapper">
+                            <select name="component" id="component" required>
+                                <option value="vmnic"><i class="mdi mdi-network"></i> vmnic</option>
+                                <option value="vmk"><i class="mdi mdi-lan"></i> vmk</option>
+                                <option value="vnic"><i class="mdi mdi-network-outline"></i> vnic</option>
+                                <option value="switchport"><i class="mdi mdi-switch"></i> 端口号</option>
+                            </select>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="interfaceGroup">
+                        <label>接口名称</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-network-wired"></i>
+                            <input type="text" name="interface" id="interface" placeholder="例如：vmnic0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="switchportGroup" style="display: none;">
+                        <label>端口号</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-plug"></i>
+                            <input type="text" name="switchport" id="switchport" placeholder="例如：50331650">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 流量方向 -->
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h2>流量方向</h2>
+                </div>
+                <div class="direction-selector">
+                    <label class="radio-card">
+                        <input type="radio" name="direction" value="both" checked>
+                        <span class="card-content">
+                            <i class="mdi mdi-swap-horizontal"></i>
+                            <span>双向</span>
+                        </span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="direction" value="in">
+                        <span class="card-content">
+                            <i class="mdi mdi-arrow-right-bold"></i>
+                            <span>仅入向</span>
+                        </span>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="direction" value="out">
+                        <span class="card-content">
+                            <i class="mdi mdi-arrow-left-bold"></i>
+                            <span>仅出向</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- 过滤条件 -->
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fas fa-filter"></i>
+                    <h2>过滤条件</h2>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>IP地址 (通用)</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-globe"></i>
+                            <input type="text" name="ip" id="ip" placeholder="例如：192.168.1.1">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group ip-specific">
+                        <label>源IP地址</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-laptop"></i>
+                            <input type="text" name="src_ip" id="src_ip" placeholder="例如：192.168.1.1">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group ip-specific">
+                        <label>目标IP地址</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-server"></i>
+                            <input type="text" name="dst_ip" id="dst_ip" placeholder="例如：192.168.1.2">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>常用协议</label>
+                        <div class="select-wrapper">
+                            <select name="protocol" id="protocol">
+                                <option value="">自定义</option>
+                                <option value="icmp">ICMP</option>
+                                <option value="dns">DNS</option>
+                                <option value="http">HTTP</option>
+                                <option value="https">HTTPS</option>
+                                <option value="ssh">SSH</option>
+                                <option value="telnet">Telnet</option>
+                            </select>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>自定义端口</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-plug"></i>
+                            <input type="text" name="port" id="port" placeholder="例如：443">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="generate-btn">
+                <i class="fas fa-magic"></i>
+                生成命令
+            </button>
+        </form>
+        
+        <div class="result">
+            <div class="command-section">
+                <div class="command-header">
+                    <h4><i class="fas fa-file-download"></i> 保存到文件</h4>
+                    <button class="copy-btn" data-target="file-command">
+                        <i class="fas fa-copy"></i>
+                        复制命令
+                    </button>
+                </div>
+                <pre id="file-command"></pre>
+            </div>
+            <div class="command-section">
+                <div class="command-header">
+                    <h4><i class="fas fa-terminal"></i> 在线分析</h4>
+                    <button class="copy-btn" data-target="online-command">
+                        <i class="fas fa-copy"></i>
+                        复制命令
+                    </button>
+                </div>
+                <pre id="online-command"></pre>
+            </div>
+        </div>
+
+        <!-- 新增参考链接部分 -->
+        <div class="reference-section">
+            <div class="section-header">
+                <i class="fas fa-book"></i>
+                <h2>参考文档</h2>
+            </div>
+            <div class="reference-links">
+                <a href="https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.networking.doc/GUID-30003897-2101-459C-81FA-FCB42313237E.html" target="_blank" class="reference-link">
+                    <i class="fas fa-external-link-alt"></i>
+                    VMware vSphere 网络文档 - pktcap-uw 工具概述
+                </a>
+                <a href="https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.networking.doc/GUID-FAE2421D-7CBA-4ACB-96E1-6FF6E53F216D.html" target="_blank" class="reference-link">
+                    <i class="fas fa-external-link-alt"></i>
+                    VMware vSphere 网络文档 - pktcap-uw 过滤选项
+                </a>
+                <a href="https://knowledge.broadcom.com/external/article/341568/using-the-pktcapuw-tool-in-esxi-55-and-l.html" target="_blank" class="reference-link">
+                    <i class="fas fa-external-link-alt"></i>
+                    Broadcom - ESXi 5.5+ pktcap-uw 工具使用指南
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-info-circle"></i> 如何获取端口组ID</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>在ESXi主机上执行以下命令来获取端口组ID：</p>
+                <pre class="command-hint">net-stats -l | grep VM_NAME|VMK_NAME</pre>
+                <p class="note"><i class="fas fa-lightbulb"></i> 提示：将VM_NAME|VMK_NAME替换为您要查找的虚拟机名称或VMkernel接口名称</p>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html> 
