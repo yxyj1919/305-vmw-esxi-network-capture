@@ -31,7 +31,6 @@
                             <select name="component" id="component" required>
                                 <option value="vmnic"><i class="mdi mdi-network"></i> vmnic</option>
                                 <option value="vmk"><i class="mdi mdi-lan"></i> vmk</option>
-                                <option value="vnic"><i class="mdi mdi-network-outline"></i> vnic</option>
                                 <option value="switchport"><i class="mdi mdi-switch"></i> 端口号</option>
                             </select>
                             <i class="fas fa-chevron-down"></i>
@@ -129,6 +128,7 @@
                                 <option value="https">HTTPS</option>
                                 <option value="ssh">SSH</option>
                                 <option value="telnet">Telnet</option>
+                                <option value="ntp">NTP</option>
                             </select>
                             <i class="fas fa-chevron-down"></i>
                         </div>
@@ -139,6 +139,22 @@
                         <div class="input-wrapper">
                             <i class="fas fa-plug"></i>
                             <input type="text" name="port" id="port" placeholder="例如：443">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>MAC地址</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-microchip"></i>
+                            <input type="text" name="mac" id="mac" placeholder="例如：00:50:56:9c:XX:XX">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>VLAN ID</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-tag"></i>
+                            <input type="text" name="vlan" id="vlan" placeholder="例如：100">
                         </div>
                     </div>
                 </div>
