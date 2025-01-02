@@ -2,15 +2,15 @@ from flask import Flask, render_template, jsonify, request
 
 app = Flask(__name__)
 
-# 定义常用协议
+# Define common protocols
 PROTOCOLS = {
-    'icmp': '--proto 0x01',  # ICMP的协议号是0x01
-    'dns': '--tcpport 53',   # DNS使用53端口
-    'http': '--tcpport 80',  # HTTP使用80端口
-    'https': '--tcpport 443', # HTTPS使用443端口
-    'ssh': '--tcpport 22',   # SSH使用22端口
-    'telnet': '--tcpport 23', # Telnet使用23端口
-    'ntp': '--udpport 123'   # NTP使用123端口 UDP协议
+    'icmp': '--proto 0x01',  # ICMP protocol number is 0x01
+    'dns': '--tcpport 53',   # DNS port
+    'http': '--tcpport 80',  # HTTP port
+    'https': '--tcpport 443', # HTTPS port
+    'ssh': '--tcpport 22',   # SSH port
+    'telnet': '--tcpport 23', # Telnet port
+    'ntp': '--udpport 123'   # NTP port (UDP protocol)
 }
 
 @app.route('/')
@@ -19,31 +19,31 @@ def index():
 
 @app.route('/generate_command', methods=['POST'])
 def generate_command():
-    # 获取基本参数
+    # Get basic parameters
     component = request.form.get('component')
     interface = request.form.get('interface')
     switchport = request.form.get('switchport')
     
-    # 获取IP相关参数
+    # Get IP related parameters
     ip = request.form.get('ip')
     src_ip = request.form.get('src_ip')
     dst_ip = request.form.get('dst_ip')
     port = request.form.get('port')
     protocol = request.form.get('protocol')
     
-    # 获取方向参数
+    # Get direction parameter
     direction = request.form.get('direction', 'both')
     
-    # 添加MAC地址参数获取
+    # Get MAC address parameter
     mac = request.form.get('mac')
     
-    # 添加VLAN参数获取
+    # Get VLAN parameter
     vlan = request.form.get('vlan')
     
-    # 构建基础命令
+    # Build base command
     command = "pktcap-uw "
     
-    # 添加接口参数
+    # Add interface parameters
     if component == "switchport":
         command += f"--switchport {switchport} "
     elif component == "vmnic":
@@ -51,7 +51,7 @@ def generate_command():
     elif component == "vmk":
         command += f"--vmk {interface} "
     
-    # 添加方向参数
+    # Add direction parameter
     if direction == "in":
         command += "--dir 0 "
     elif direction == "out":
@@ -59,15 +59,15 @@ def generate_command():
     elif direction == "both":
         command += "--dir 2 "
     
-    # 添加MAC地址过滤
+    # Add MAC address filter
     if mac:
         command += f"--mac {mac} "
     
-    # 添加VLAN过滤
+    # Add VLAN filter
     if vlan:
         command += f"--vlan {vlan} "
     
-    # 添加IP过滤
+    # Add IP filter
     if ip:
         command += f"--ip {ip} "
     else:
@@ -76,13 +76,13 @@ def generate_command():
         if dst_ip:
             command += f"--dstip {dst_ip} "
     
-    # 修改协议或端口过滤
+    # Add protocol or port filter
     if protocol in PROTOCOLS:
         command += f"{PROTOCOLS[protocol]} "
-    elif port:  # 如果没有选择预定义协议但指定了端口
-        command += f"--tcpport {port} "  # 使用 --tcpport 替代原来的 --dstport 和 --srcport
+    elif port:  # If no predefined protocol but port specified
+        command += f"--tcpport {port} "
     
-    # 生成两种命令
+    # Generate commands
     file_command = command + "-o /tmp/capture.pcap"
     online_command = command + "-o - | tcpdump-uw -enr -"
     

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const portInput = document.getElementById('port');
     const portGroup = portInput.closest('.form-group');
 
-    // 当选择协议时禁用/启用端口输入
+    // When selecting protocol, enable/disable port input
     protocolSelect.addEventListener('change', function() {
         if (this.value !== '') {
             portInput.disabled = true;
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const submitButton = this.querySelector('button[type="submit"]');
         submitButton.disabled = true;
-        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 生成中...';
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
         
         const formData = new FormData(this);
         
@@ -31,33 +31,33 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById('file-command').textContent = data.file_command || '使用在线分析模式时无需此命令';
+            document.getElementById('file-command').textContent = data.file_command || 'Not required for online analysis mode';
             document.getElementById('online-command').textContent = data.online_command;
             
-            // 滚动到结果区域
+            // Scroll to result area
             document.querySelector('.result').scrollIntoView({ behavior: 'smooth' });
         })
         .catch(error => {
             console.error('Error:', error);
-            showNotification('生成命令时发生错误！', 'error');
+            showNotification('Error generating command!', 'error');
         })
         .finally(() => {
             submitButton.disabled = false;
-            submitButton.innerHTML = '<i class="fas fa-magic"></i> 生成命令';
+            submitButton.innerHTML = '<i class="fas fa-magic"></i> Generate Command';
         });
     });
 
-    // 为所有复制按钮添加事件监听
+    // Add event listeners for all copy buttons
     document.querySelectorAll('.copy-btn').forEach(button => {
         button.addEventListener('click', function() {
             const targetId = this.getAttribute('data-target');
             const command = document.getElementById(targetId).textContent;
             
-            if (command && command !== '使用在线分析模式时无需此命令') {
+            if (command && command !== 'Not required for online analysis mode') {
                 navigator.clipboard.writeText(command)
                     .then(() => {
                         const originalText = this.innerHTML;
-                        this.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                        this.innerHTML = '<i class="fas fa-check"></i> Copied';
                         this.classList.add('copied');
                         
                         setTimeout(() => {
@@ -65,16 +65,16 @@ document.addEventListener('DOMContentLoaded', function() {
                             this.classList.remove('copied');
                         }, 2000);
                         
-                        showNotification('命令已复制到剪贴板！', 'success');
+                        showNotification('Command copied to clipboard!', 'success');
                     })
                     .catch(() => {
-                        showNotification('复制失败，请手动复制', 'error');
+                        showNotification('Copy failed, please copy manually', 'error');
                     });
             }
         });
     });
 
-    // IP地址输入框联动
+    // IP address input linkage
     const ipInput = document.getElementById('ip');
     const srcIpInput = document.getElementById('src_ip');
     const dstIpInput = document.getElementById('dst_ip');
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // 组件类型切换处理
+    // Component type switch handling
     const componentSelect = document.getElementById('component');
     const interfaceGroup = document.getElementById('interfaceGroup');
     const switchportGroup = document.getElementById('switchportGroup');
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
             switchportGroup.style.display = 'block';
             interfaceInput.required = false;
             switchportInput.required = true;
-            // 显示帮助模态框
+            // Show help modal
             showModal();
         } else {
             interfaceGroup.style.display = 'block';
@@ -126,42 +126,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 表单提交前的验证
+    // Form validation before submit
     form.addEventListener('submit', function(e) {
         const component = componentSelect.value;
         if (component === 'switchport' && !switchportInput.value) {
             e.preventDefault();
-            showNotification('请输入端口号', 'error');
+            showNotification('Please enter port ID', 'error');
             return;
         }
         if (component !== 'switchport' && !interfaceInput.value) {
             e.preventDefault();
-            showNotification('请输入接口名称', 'error');
+            showNotification('Please enter interface name', 'error');
             return;
         }
-        // ... 现有的提交处理代码 ...
+        // ... existing submit handling code ...
     });
 
-    // 添加模态框控制函数
+    // Add modal control functions
     function showModal() {
         const modal = document.getElementById('helpModal');
         modal.classList.add('show');
     }
 
-    // 关闭模态框的点击事件
+    // Close modal click event
     document.querySelector('.close-modal').addEventListener('click', function() {
         const modal = document.getElementById('helpModal');
         modal.classList.remove('show');
     });
 
-    // 点击模态框外部关闭
+    // Close when clicking outside modal
     document.getElementById('helpModal').addEventListener('click', function(e) {
         if (e.target === this) {
             this.classList.remove('show');
         }
     });
 
-    // 按ESC键关闭模态框
+    // Close modal with ESC key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             const modal = document.getElementById('helpModal');
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// 添加通知功能
+// Add notification function
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
@@ -181,17 +181,17 @@ function showNotification(message, type = 'success') {
     
     document.body.appendChild(notification);
     
-    // 触发动画
+    // Trigger animation
     setTimeout(() => notification.classList.add('show'), 10);
     
-    // 自动移除通知
+    // Automatically remove notification
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
 
-// 添加通知样式
+// Add notification styles
 const style = document.createElement('style');
 style.textContent = `
     .notification {
