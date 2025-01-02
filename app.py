@@ -51,6 +51,8 @@ def generate_command():
         command += "--dir 0 "
     elif direction == "out":
         command += "--dir 1 "
+    elif direction == "both":
+        command += "--dir 2 "
     
     # 添加IP过滤
     if ip:  # 优先使用通用IP过滤
@@ -66,9 +68,6 @@ def generate_command():
         command += f"{PROTOCOLS[protocol]} "
     elif port:  # 如果没有选择预定义协议但指定了端口
         command += f"--dstport {port} --srcport {port} "
-    
-    # 添加捕获模式参数
-    command += "--capture PortOutput "
     
     # 生成两种命令
     file_command = command + "-o /tmp/capture.pcap"
