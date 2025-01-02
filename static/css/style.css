@@ -546,4 +546,39 @@ pre {
 
 .logo i:hover {
     animation: rotate 2s linear infinite;
+}
+
+/* Footer styles */
+.footer {
+    margin-top: 30px;
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+}
+
+.footer p {
+    margin: 5px 0;
+    color: var(--text-secondary);
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.contact-info a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.contact-info i {
+    color: var(--text-secondary);
 } 
