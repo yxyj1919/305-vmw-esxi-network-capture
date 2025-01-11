@@ -15,6 +15,7 @@
 ![主界面](https://yxyj1919-imagebed.oss-cn-beijing.aliyuncs.com/rocket-image/202501111656756.png)
 
 ### 命令生成
+![命令生成](https://yxyj1919-imagebed.oss-cn-beijing.aliyuncs.com/rocket-image/202501111713907.png)
 
 ## 环境要求
 
