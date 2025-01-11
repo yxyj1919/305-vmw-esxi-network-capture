@@ -1,5 +1,4 @@
 # ESXi Network Packet Capture Web Interface
-![](https://yxyj1919-imagebed.oss-cn-beijing.aliyuncs.com/rocket-image/202501111656756.png)
 这是一个基于Flask的Web应用程序，用于生成ESXi主机上的数据包捕获命令。
 
 ## 功能特点
@@ -16,7 +15,6 @@
 ![主界面](https://yxyj1919-imagebed.oss-cn-beijing.aliyuncs.com/rocket-image/202501111656756.png)
 
 ### 命令生成
-![命令生成](https://yxyj1919-imagebed.oss-cn-beijing.aliyuncs.com/rocket-image/202501111656756.png)
 
 ## 环境要求
 
