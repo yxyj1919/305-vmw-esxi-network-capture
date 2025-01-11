@@ -10,6 +10,14 @@
 - 支持双向、入向、出向流量捕获
 - 提供文件保存和在线查看两种捕获模式
 
+## 项目预览
+
+### 主界面
+![主界面](https://yxyj1919-imagebed.oss-cn-beijing.aliyuncs.com/rocket-image/202501111656756.png)
+
+### 命令生成
+![命令生成](https://yxyj1919-imagebed.oss-cn-beijing.aliyuncs.com/rocket-image/202501111656756.png)
+
 ## 环境要求
 
 - Python 3.x
@@ -18,5 +26,7 @@
 - Gunicorn 21.2.0
 
 ## 安装步骤
+
+### 方式一：本地安装
 
 1. 克隆仓库：
