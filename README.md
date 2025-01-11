@@ -1,4 +1,4 @@
-# ESXi Network Packet Capture Web Interface
+# ESXi Network Capture Tool
 这是一个基于Flask的Web应用程序，用于生成ESXi主机上的数据包捕获命令。
 
 ## 功能特点
@@ -29,6 +29,9 @@
 ### 方式一：本地安装
 
 1. 克隆仓库：
+
+
+### 方式一：容器部署
 
 ## 版本管理
 
