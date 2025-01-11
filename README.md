@@ -18,7 +18,6 @@
 ![命令生成](https://yxyj1919-imagebed.oss-cn-beijing.aliyuncs.com/rocket-image/202501111713907.png)
 
 ## 环境要求
-
 - Python 3.x
 - Flask 2.3.3
 - Werkzeug 2.3.7
@@ -29,80 +28,46 @@
 ### 方式一：本地安装
 
 1. 克隆仓库：
-\`\`\`
+```
 git clone <repository-url>
 cd <repository-name>
-\`\`\`
+```
 
 2. 创建虚拟环境：
-\`\`\`
+```
 python -m venv venv
-\`\`\`
-
+```
 3. 激活虚拟环境：
-
-Windows:
-\`\`\`
-venv\Scripts\activate
-\`\`\`
-
-Linux/Mac:
-\`\`\`
+```
 source venv/bin/activate
-\`\`\`
+```
 
 4. 安装依赖：
-\`\`\`
+```
 pip install -r requirements.txt
-\`\`\`
+```
 
 5. 运行应用：
-\`\`\`
+```
 python app.py
-\`\`\`
+```
 
 ### 方式二：容器部署
 
 1. 构建镜像：
-\`\`\`
+```
 docker build -t packet-capture:latest .
-\`\`\`
+```
 
 2. 运行容器：
-\`\`\`
+```
 # 后台运行
 docker run -d -p 5000:5000 --name packet-capture packet-capture:latest
 
 # 或者指定时区运行
 docker run -d -p 5000:5000 -e TZ=Asia/Shanghai --name packet-capture packet-capture:latest
-\`\`\`
+```
 
-3. 容器管理：
-\`\`\`
-# 查看运行状态
-docker ps
-
-# 查看容器日志
-docker logs packet-capture
-
-# 查看实时日志
-docker logs -f packet-capture
-
-# 停止容器
-docker stop packet-capture
-
-# 启动容器
-docker start packet-capture
-
-# 重启容器
-docker restart packet-capture
-
-# 删除容器
-docker rm packet-capture
-
-# 删除镜像
-docker rmi packet-capture:latest
-\`\`\`
 
 ## 版本管理
 
@@ -120,24 +85,22 @@ docker rmi packet-capture:latest
 
 ### 版本发布流程
 1. 更新版本号：
-\`\`\`
+```   
 docker build -t packet-capture:1.0.0 .
 docker tag packet-capture:1.0.0 packet-capture:latest
-\`\`\`
-
+```
 2. 创建Git标签：
-\`\`\`
+```
 git tag -a v1.0.0 -m "Release version 1.0.0"
 git push origin v1.0.0
-\`\`\`
-
+```
 3. 发布Docker镜像：
-\`\`\`
+```
 # 推送指定版本
 docker push packet-capture:1.0.0
 # 推送最新版本
 docker push packet-capture:latest
-\`\`\`
+```
 
 ## 使用说明
 
